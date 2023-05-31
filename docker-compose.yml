@@ -1,0 +1,55 @@
+version: '3.8'
+
+x-env-postgres: &env-postgres
+  POSTGRES_NAME: ${POSTGRES_NAME}
+  POSTGRES_USER: ${POSTGRES_USER}
+  POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+
+x-env-django: &env-django
+  SECRET_KEY: ${SECRET_KEY}
+  DEBUG: ${DEBUG}
+  ALLOWED_HOSTS: ${ALLOWED_HOSTS}
+  ACCESS_TTL: ${ACCESS_TTL}
+  REFRESH_TTL: ${REFRESH_TTL}
+
+x-env-bot: &env-bot
+  BOT_TOKEN: ${BOT_TOKEN}
+
+services:
+  db:
+    container_name: iot-postgres
+    image: postgres
+    restart: unless-stopped
+    environment:
+      <<: *env-postgres
+  django:
+    build: ./bin/django/
+    container_name: iot-django
+    command: python manage.py runserver 0.0.0.0:${DJANGO_PORT}
+    volumes:
+      - ./backend:/opt/app/
+    ports:
+      - ${DJANGO_PORT}:${DJANGO_PORT}
+    environment:
+      <<: [*env-postgres, *env-django]
+    depends_on:
+      - db
+  bot:
+    build: ./bin/bot/
+    container_name: iot-bot
+    command: sh -c "python bot.py"
+    volumes:
+      - ./bot:/opt/app/
+    ports:
+      - ${BOT_PORT}:80
+    depends_on:
+      - db
+      - django
+    environment:
+      <<: *env-bot
+    restart: on-failure
+
+volumes:
+  db:
+  django:
+  bot:
