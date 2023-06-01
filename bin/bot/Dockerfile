@@ -1,4 +1,4 @@
-FROM python:3.8
+FROM python:3.10
 
 # don't make .pyc files
 ENV PYTHONDONTWRITEBYTECODE 1
