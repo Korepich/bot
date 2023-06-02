@@ -38,6 +38,7 @@ services:
       <<: [*env-postgres, *env-django]
     depends_on:
       - db
+      - redis
   bot:
     build: ./bin/bot/
     container_name: iot-bot
@@ -49,11 +50,12 @@ services:
     depends_on:
       - db
       - django
+      - redis
     environment:
       <<: [*env-bot, *env-global]
     restart: on-failure
   redis:
-    container_name: hr-redis
+    container_name: iot-redis
     image: redis:alpine
     ports:
       - 6379:6379

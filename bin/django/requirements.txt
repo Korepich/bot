@@ -8,3 +8,5 @@ psycopg2
 djangorestframework
 djangorestframework-simplejwt
 drf-yasg
+channels
+channels-redis
