@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import ActionCreateView, DoorCreateView, DoorRetrieveView, DoorListView
+from .views import ActionCreateView, DoorCreateView, DoorRetrieveView, DoorListView, ActionListView
 
 urlpatterns = [
     path(
@@ -8,6 +8,14 @@ urlpatterns = [
         ActionCreateView.as_view(
             {
                 "post": "create",
+            }
+        ),
+    ),
+    path(
+        "api/v1/action/list/",
+        ActionListView.as_view(
+            {
+                "get": "list",
             }
         ),
     ),

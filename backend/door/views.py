@@ -7,7 +7,9 @@ from .serializers import (
     ActionCreateSerializer,
     DoorCreateSerializer,
     DoorRetrieveSerializer,
+    ActionListSerializer,
 )
+from .pagination import ActionPagination
 from helpers.serializer_lifecycle import serializer_lifecycle
 from helpers.get_data_with_user import get_data_with_user
 
@@ -23,6 +25,15 @@ class ActionCreateView(mixins.CreateModelMixin, viewsets.GenericViewSet):
         serializer = serializer_lifecycle(self.serializer_class, data=data)
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+class ActionListView(mixins.ListModelMixin, viewsets.GenericViewSet):
+    queryset = Action.objects.all()
+    serializer_class = ActionListSerializer
+    pagination_class = ActionPagination
+
+    def get_queryset(self):
+        return self.queryset.order_by("-created")
 
 
 class DoorRetrieveView(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
