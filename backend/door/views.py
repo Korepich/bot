@@ -2,18 +2,21 @@ from rest_framework import viewsets, mixins, status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
-from .models import Action, Door
+from .models import Action, Door, Breaking
 from .serializers import (
-    ActionCreateSerializer,
     DoorCreateSerializer,
     DoorRetrieveSerializer,
+    ActionCreateSerializer,
     ActionListSerializer,
+    BreakingCreateSerializer,
+    BreakingListSerializer,
 )
 from .pagination import ActionPagination
 from helpers.serializer_lifecycle import serializer_lifecycle
 from helpers.get_data_with_user import get_data_with_user
 
 
+# Action
 class ActionCreateView(mixins.CreateModelMixin, viewsets.GenericViewSet):
     queryset = Action.objects.all()
     permission_classes = [IsAuthenticatedOrReadOnly]
@@ -36,6 +39,22 @@ class ActionListView(mixins.ListModelMixin, viewsets.GenericViewSet):
         return self.queryset.order_by("-created")
 
 
+# Breaking
+class BreakingCreateView(mixins.CreateModelMixin, viewsets.GenericViewSet):
+    queryset = Breaking.objects.all()
+    serializer_class = BreakingCreateSerializer
+
+
+class BreakingListView(mixins.ListModelMixin, viewsets.GenericViewSet):
+    queryset = Breaking.objects.all()
+    serializer_class = BreakingListSerializer
+    pagination_class = ActionPagination
+
+    def get_queryset(self):
+        return self.queryset.order_by("-created")
+
+
+# Door
 class DoorRetrieveView(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
     queryset = Door.objects.all()
     permission_classes = [IsAuthenticatedOrReadOnly]
