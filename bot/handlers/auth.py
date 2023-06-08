@@ -2,7 +2,7 @@ from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram import types, Dispatcher
 
-from keyboards import kb_client, auth_client
+from keyboards import kb_client, auth_client, kb_admin
 from storage import redis
 from authentication import authentication
 
@@ -32,7 +32,10 @@ async def set_password(message: types.Message, state: FSMContext):
         is_auth = authentication(data)
 
         if is_auth == True:
-            await message.answer("Авторизация прошла успешно", reply_markup=kb_client)
+            keyboard = kb_admin if int(redis.get("user_id")) == 1 else kb_client
+
+            await message.answer("Авторизация прошла успешно", reply_markup=keyboard)
+
             redis.set("is_auth", "True")
         else:
             await message.answer("Ошибка при авторизации!", reply_markup=auth_client)
