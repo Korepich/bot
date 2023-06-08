@@ -2,10 +2,10 @@ import json
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
 
 
-class NotificationConsumer(AsyncJsonWebsocketConsumer):
-    async def connect(self):
-        self.room_group_name = "1"
+class MkNotificationConsumer(AsyncJsonWebsocketConsumer):
+    room_group_name = "mk"
 
+    async def connect(self):
         await self.channel_layer.group_add(
             self.room_group_name,
             self.channel_name,
@@ -16,8 +16,6 @@ class NotificationConsumer(AsyncJsonWebsocketConsumer):
         msg = json.dumps(
             {
                 "message": event["message"],
-                "room_name": self.room_group_name,
-                "channel_name": self.channel_name,
             }
         )
 
@@ -28,3 +26,7 @@ class NotificationConsumer(AsyncJsonWebsocketConsumer):
             self.room_group_name,
             self.channel_layer,
         )
+
+
+class BotNotificationConsumer(MkNotificationConsumer):
+    room_group_name = "bot"
