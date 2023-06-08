@@ -1,7 +1,6 @@
-from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
+from aiogram.types import ReplyKeyboardMarkup
 
-open_door_btn = KeyboardButton('Открыть дверь')
-close_door_btn = KeyboardButton('Закрыть дверь')
+from .common_btns import open_door_btn, close_door_btn
 
 kb_client = ReplyKeyboardMarkup(resize_keyboard=True)
 

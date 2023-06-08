@@ -1,1 +1,1 @@
-from handlers import client, auth
+from handlers import client, auth, admin

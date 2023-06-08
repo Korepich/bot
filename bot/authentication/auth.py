@@ -2,7 +2,6 @@ from helpers.request import create_post_request
 import json
 from os import environ
 import threading
-from datetime import timedelta
 
 from helpers import base64_decode
 from storage import redis
