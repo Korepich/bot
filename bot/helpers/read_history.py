@@ -6,10 +6,12 @@ from helpers import create_get_request
 
 
 def read_history():
-    current_page = int(redis.get("history_pages_current") or '1')
+    current_page = redis.get("history_pages_current")
 
     if current_page == None:
         redis.set("history_pages_current", 1)
+
+    current_page = 1
 
     response = create_get_request("action/list", {"page": current_page}).json()
 
