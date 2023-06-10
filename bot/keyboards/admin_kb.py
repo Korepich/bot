@@ -20,9 +20,9 @@ kb_admin = (
 
 # Inline keyboard
 def get_inline_admin_kb():
-    pages_quantity = int(redis.get("history_pages_quantity"))
+    pages_quantity = int(redis.get("history_pages_quantity") or '1')
 
-    current_page = int(redis.get("history_pages_current"))
+    current_page = int(redis.get("history_pages_current") or '1')
 
     prev_btn = InlineKeyboardButton("←", callback_data="history_prev")
     pages_counter = InlineKeyboardButton(
