@@ -11,7 +11,7 @@ def read_history():
     if current_page == None:
         redis.set("history_pages_current", 1)
 
-    current_page = 1
+    redis.get("history_pages_current")
 
     response = create_get_request("action/list", {"page": current_page}).json()
 
@@ -26,5 +26,5 @@ def read_history():
         date = parser.parse(item["created"])
 
         history += f"Действие: {action}\nВремя {date.day}.{date.month}.{date.year} {date.hour}:{date.minute}\n\n"
-    
+
     return history
