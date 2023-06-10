@@ -6,7 +6,7 @@ from helpers import create_get_request
 
 
 def read_history():
-    current_page = int(redis.get("history_pages_current"))
+    current_page = int(redis.get("history_pages_current") or '1')
 
     if current_page == None:
         redis.set("history_pages_current", 1)
