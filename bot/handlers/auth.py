@@ -25,6 +25,8 @@ async def set_login(message: types.Message, state: FSMContext):
 
 
 async def set_password(message: types.Message, state: FSMContext):
+    redis.set("tg_user_id", message["from"]["id"])
+
     async with state.proxy() as data:
         data["password"] = message.text
 

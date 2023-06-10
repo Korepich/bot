@@ -4,7 +4,6 @@ from aiogram.types.callback_query import CallbackQuery
 from storage import redis
 from keyboards import get_inline_admin_kb
 from helpers import read_history
-from create_bot import bot
 
 
 async def see_history(message: types.Message):
@@ -18,9 +17,6 @@ async def history_step(cb: CallbackQuery):
     current_page += 1 if cb.data.find("next") != -1 else -1
 
     redis.set("history_pages_current", current_page)
-
-    # pages_quantity = int(redis.get("history_pages_quantity"))
-    # current_page = int(redis.get("history_pages_current"))
 
     history = read_history()
 

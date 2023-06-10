@@ -2,3 +2,5 @@ aiogram
 requests
 redis
 python-dateutil
+websocket-client
+asyncio
