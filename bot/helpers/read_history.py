@@ -23,8 +23,7 @@ def read_history():
 
     for item in response["results"]:
         action = "открыть" if item["is_open"] == True else "закрыть"
-        date = parser.parse(item["created"])
-
-        history += f"Действие: {action}\nВремя {date.day}.{date.month}.{date.year} {date.hour}:{date.minute}\n\n"
+        date = parser.parse(item["created"]).strftime("%d.%m.%Y %H:%M")
+        history += f"Действие: {action}\nВремя {date}\n\n"
 
     return history
