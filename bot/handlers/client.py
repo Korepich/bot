@@ -4,6 +4,8 @@ from keyboards import auth_client
 from storage import redis
 from helpers.request import create_post_request
 
+from helpers import ws_send_message
+
 
 async def send_welcome(message: types.Message):
     await message.answer("Привет, авторизуйся!", reply_markup=auth_client)
@@ -18,14 +20,16 @@ async def send_door_action(message: types.Message):
     match message["text"]:
         case "Открыть дверь":
             door_action.update({"is_open": True})
-            create_post_request("action", door_action, True)
+            ws_send_message("door_open")
+            # create_post_request("action", door_action, True)
 
-            await message.answer('Дверь открыта!')
+            await message.answer('Ждем подтверждения . . .')
         case "Закрыть дверь":
             door_action.update({"is_open": False})
-            create_post_request("action", door_action, True)
+            ws_send_message("door_close")
+            # create_post_request("action", door_action, True) 
 
-            await message.answer('Дверь закрыта!')
+            await message.answer('Ждем подтверждения . . .')
         case _:
             print(f"no action specified! {message['text']}")
 
